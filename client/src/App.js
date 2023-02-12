@@ -1,11 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter,Route,Routes} from 'react-router-dom';
+import './resources/global.css'
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
 
 function App() {
   return (
-    <div className="App">
-      <h1>shy bus</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element= {<Home/>} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/login' element={<Login/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
