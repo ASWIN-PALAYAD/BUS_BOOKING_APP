@@ -11,6 +11,7 @@ import AdminHome from './pages/Admin/AdminHome'
 import AdminBuses from './pages/Admin/AdminBuses';
 import AdminUsers from './pages/Admin/AdminUsers';
 import BookNow from './pages/BookNow';
+import Bookings from './pages/Bookings';
 
 
 
@@ -32,6 +33,7 @@ function App() {
           <Route path='/Admin/users' element= {<ProtectedRoute> <AdminUsers/> </ProtectedRoute>} />
 
           <Route path='/book-now/:id' element= {<ProtectedRoute> <BookNow/> </ProtectedRoute>} />
+          <Route path='/bookings' element= {<ProtectedRoute> <Bookings/> </ProtectedRoute>} />
 
 
         </Routes>

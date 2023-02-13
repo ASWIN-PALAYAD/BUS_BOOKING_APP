@@ -35,16 +35,33 @@ const BookNow = () => {
         }
       }
 
-      const onToken = (token) => {
-        console.log(token);
+      const onToken = async(token) => {
+        try {
+          dispatch(ShowLoading());
+          const response = await axiosInstance.post('/api/bookings/make-payment',{
+            token,
+            amount:selectedSeats.length * bus.fare * 100,
+          })
+          dispatch(HideLoading());
+          if(response.data.success){
+            message.success(response.data.message)
+            bookNow(response.data.data.transactionId)
+          }else{
+            message.error(response.data.message)
+          }
+        } catch (error) {
+          dispatch(HideLoading)
+          message.error(error.message)
+        }
       }
 
-      const bookNow = async () => {
+      const bookNow = async (transactionId) => {
         try {
           dispatch(ShowLoading());
           const response = await axiosInstance.post('/api/bookings/book-seat',{
             bus:bus._id,
             seats: selectedSeats,
+            transactionId,
           })
           dispatch(HideLoading());
           if(response.data.success){
@@ -64,7 +81,7 @@ const BookNow = () => {
   return (
     <div>
         {bus && (
-            <Row className='mt-3' gutter={20}>
+            <Row className='mt-3' gutter={[30,30]}>
             {/*  bus deatails area */}
             <Col lg={12} xs={24} sm={24} >
                 <h1 className="text-xl text-secondary">{bus.name}</h1>
@@ -83,10 +100,16 @@ const BookNow = () => {
                     <h1 className='text-2xl' > 
                         Selected Seats : {selectedSeats.join(',')}
                     </h1>
-                    <h1 className='text-2xl'>Fare : $ {bus.fare*selectedSeats.length}</h1>
+                    <h1 className='text-2xl'>Fare :  ₹ {bus.fare*selectedSeats.length}</h1>
                     <hr />
                     
-                    <StripeCheckout token={onToken} stripeKey="pk_test_51MazwsSC7dTkAVAN3UGsqb66BT1gLxI8lFqJ45gBMuQ6Fx8QjxxJ5Xk3G77f0xBg14SNAaY8R8NrTaN1RdHOZuHk00oAonMefT">
+                    <StripeCheckout 
+                      billingAddress
+                       token={onToken} 
+                       amount={bus.fare * selectedSeats.length * 100}
+                       currency='INR'
+                      stripeKey="pk_test_51MazwsSC7dTkAVAN3UGsqb66BT1gLxI8lFqJ45gBMuQ6Fx8QjxxJ5Xk3G77f0xBg14SNAaY8R8NrTaN1RdHOZuHk00oAonMefT"
+                    >
                     <button className={`btn secondary-btn ${selectedSeats.length === 0 && 'disabled-btn'}`} mt-3  disabled={selectedSeats.length=== 0} >Book Now</button>
                     </StripeCheckout>
 

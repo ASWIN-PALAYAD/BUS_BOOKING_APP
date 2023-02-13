@@ -14,6 +14,7 @@ const AdminBuses = () => {
   const [showBusForm, setShowBusForm] = useState(false);
   const [buses, setBuses] = useState([]);
   const [selectedBus, setSelectedBus] = useState(null)
+  
   const columns = [
     {
       title:'Name',
@@ -96,7 +97,7 @@ const AdminBuses = () => {
   }
 
 
-  useEffect(() => {
+  useEffect(() => { 
     getBuses();
   }, [])
   
