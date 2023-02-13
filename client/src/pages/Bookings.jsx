@@ -1,15 +1,17 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useRef} from 'react'
 import BusForm from '../components/BusForm';
 import PageTitle from '../components/PageTitle';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../redux/alertsSlice';
 import { axiosInstance } from '../helpers/axiosInstance';
-import { message, Table } from 'antd';
+import { message, Modal, Table } from 'antd';
 import moment from 'moment';
-import { render } from 'react-dom';
+import { useReactToPrint } from 'react-to-print';
 
 const Bookings = () => {
 
+    const [showPrintModel, setShowPrintModel] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState(null);
     const [bookings, setBookings] = useState([])
     const dispatch = useDispatch();
 
@@ -42,7 +44,10 @@ const Bookings = () => {
             dataIndex:'action',
             render: (text,record)=> (
                 <div>
-                    <h1 className="text-md underline">Print Ticket</h1>
+                    <h1 className="text-md underline" onClick={()=> {
+                        setSelectedBooking(record);
+                        setShowPrintModel(true);
+                    }}>Print Ticket</h1>
                 </div>
             )
         }
@@ -60,7 +65,6 @@ const Bookings = () => {
                 return {
                     ...booking,
                     ...booking.bus,
-                    ...booking.user,
                     key:booking._id
                 }
             })
@@ -79,12 +83,65 @@ const Bookings = () => {
     useEffect(() => { 
         getBookings();
       }, [])
+
+
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    });
       
 
   return (
     <div>
         <PageTitle tilte={'Bookings'} />
-        <Table dataSource={bookings} columns={columns} />
+        <div className='mt-2' >
+           <Table dataSource={bookings} columns={columns} />
+        </div>
+
+        {/* model */}
+        {showPrintModel && (
+            <Modal title='Print Ticket' onCancel={()=> {
+                setSelectedBooking(null);
+                setShowPrintModel(false);
+              }} 
+               open={showPrintModel}
+               okText='Print'
+               onOk={handlePrint}
+            >
+                <div className='d-flex flex-column p-5' ref={componentRef} >
+                    <hr />
+                    <h1 className="text-lg">Bus : {selectedBooking.name}</h1>
+                    <h1 className="text-md text-secondary">{selectedBooking.from} - {selectedBooking.to}</h1>
+                    <hr />
+                    <p>
+                        <span className='text-secondary' >Journey Date : </span>
+                        {moment(selectedBooking.journeyDate).format('DD-MM-YYYY')}
+                    </p>
+                    <p>
+                        <span className='text-secondary' >Journey Time : </span>
+                        {selectedBooking.departure}
+                    </p>
+                    <p>
+                        <span className='text-secondary' >Seats : </span>
+                        {selectedBooking.seats}
+                    </p>
+                    <hr />
+                    <p>
+                        <span className='text-secondary text-lg' >Seat Number : </span><br />
+                        {selectedBooking.seats}
+                    </p>
+                    <hr />
+                    <p>
+                        <span className='text-secondary text-lg' >Total Amount : </span><br />
+                        {selectedBooking.amount} /-
+                        {/* {selectedBooking.fare * selectedBooking.seats.length} */}
+                    </p>
+
+                </div>
+
+    
+            </Modal>
+        )}
     </div>
   )
 }
