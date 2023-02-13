@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import SeatSelection from '../components/SeatSelection';
 import { axiosInstance } from '../helpers/axiosInstance';
 import { HideLoading, ShowLoading } from '../redux/alertsSlice';
+import StripeCheckout from 'react-stripe-checkout';
 
 const BookNow = () => {
     const dispatch = useDispatch();
@@ -34,6 +35,29 @@ const BookNow = () => {
         }
       }
 
+      const onToken = (token) => {
+        console.log(token);
+      }
+
+      const bookNow = async () => {
+        try {
+          dispatch(ShowLoading());
+          const response = await axiosInstance.post('/api/bookings/book-seat',{
+            bus:bus._id,
+            seats: selectedSeats,
+          })
+          dispatch(HideLoading());
+          if(response.data.success){
+            message.success(response.data.message)
+          }else{
+            message.error(response.data.message)
+          }
+        } catch (error) {
+          dispatch(HideLoading());
+          message.error(error.message)
+        }
+      }
+
     useEffect(() => {
         getBus();
       }, [])
@@ -51,14 +75,21 @@ const BookNow = () => {
                     <div className="text-lg"><b>Fare : ${bus.fare}/-</b></div>
                     <div className="text-lg"><b>Departure Time : {bus.departure}</b></div>
                     <div className="text-lg"><b>Arrival Time : {bus.arrival}</b></div>
+                    <div className="text-lg"><b>Capacity : {bus.capacity}</b></div>
+                    <div className="text-lg"><b>Seats Left : {bus.capacity-bus.seatsBooked.length}</b></div>
                 </div>
-                <hr />
+                <hr />  
                 <div className='flex flex-col gap-2 mt-2' >
                     <h1 className='text-2xl' > 
-                        <b>Selected Seats</b>: {selectedSeats.join(',')}
+                        Selected Seats : {selectedSeats.join(',')}
                     </h1>
-                    <h1 className='text-2xl'>Fare : <b>$ {bus.fare*selectedSeats.length}</b></h1>
-                    <button className='secondary-btn mt-3' >Book Now</button>
+                    <h1 className='text-2xl'>Fare : $ {bus.fare*selectedSeats.length}</h1>
+                    <hr />
+                    
+                    <StripeCheckout token={onToken} stripeKey="pk_test_51MazwsSC7dTkAVAN3UGsqb66BT1gLxI8lFqJ45gBMuQ6Fx8QjxxJ5Xk3G77f0xBg14SNAaY8R8NrTaN1RdHOZuHk00oAonMefT">
+                    <button className={`btn secondary-btn ${selectedSeats.length === 0 && 'disabled-btn'}`} mt-3  disabled={selectedSeats.length=== 0} >Book Now</button>
+                    </StripeCheckout>
+
                 </div>
             </Col>
 

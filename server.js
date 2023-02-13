@@ -5,13 +5,15 @@ const dbconfig = require('./config/dbConfig');
 
 
 const userRoute = require('./routes/usersRoute');
-const busesRoute = require('./routes/busesRoute');
+const busesRoute = require('./routes/busesRoute'); 
+const bookingsRoute = require('./routes/bookingsRoute')
 
 const app = express();
 app.use(json());
 
 app.use('/api/users',userRoute);
-app.use('/api/buses',busesRoute)
+app.use('/api/buses',busesRoute);
+app.use('/api/bookings',bookingsRoute);
 
 
 

@@ -51,11 +51,20 @@ input{
 }
 
 .secondary-btn{
-    background-color: var(--secondary);
+    background-color: var(--secondary) !important;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    border-radius: 10px;
+}
+
+.disabled-btn{
+    background-color: gray !important;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: not-allowed;
     border-radius: 10px;
 }
 

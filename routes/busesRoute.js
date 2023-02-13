@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const Bus = require('../models/busModel')
+const Bus = require('../models/busModel');
+const authMiddleware = require('../middlewares/authMiddleware')
 
 //add bus
-router.post('/add-bus',async(req,res)=> {
+router.post('/add-bus',authMiddleware,async(req,res)=> {
     try {
         // console.log(req.body);
         const existingBus = await Bus.findOne({number:req.body.number})
@@ -26,5 +27,73 @@ router.post('/add-bus',async(req,res)=> {
         })
     }
 })
+
+//get all buses
+router.get('/get-all-buses',authMiddleware,async (req,res) => {
+    try {
+        const buses = await Bus.find();
+        return res.status(200).send({
+            success: true,
+            message:'Buses fetched successfully',
+            data:buses
+        });
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            message:error.message
+        })
+    }
+});
+
+//update bus
+router.patch('/update-bus',authMiddleware,async(req,res)=> {
+    try {
+        await Bus.findByIdAndUpdate(req.body._id,req.body);
+        return res.status(200).send({
+            success:true,
+            message:'Bus details updated successfully',
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            message:error.message
+        });
+    }
+});
+
+//deleter bus
+router.post('/delete-bus',authMiddleware,async(req,res)=> { 
+    try {
+        await Bus.findByIdAndDelete(req.body._id);
+        return res.status(200).send({
+            success:true,
+            message:'Bus deleted successfully'  
+        });
+    } catch (error) {
+        res.status(500).send({
+            success:false,      
+            message: error.message    
+        });
+    } 
+});
+
+//get bus by id
+router.post('/get-bus-by-id',authMiddleware,async (req,res)=> {
+    try {
+        const bus = await Bus.findById(req.body._id);
+        return res.status(200).send({
+            success:true,
+            message:'bus fetched successfully', 
+            data:bus,
+        })
+    } catch (error) {
+        res.status(500).send({
+            success:false,
+            message:error.message
+        })
+    }
+})
+
+
 
 module.exports = router;
