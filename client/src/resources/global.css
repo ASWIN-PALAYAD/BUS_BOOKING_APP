@@ -18,6 +18,7 @@ input{
 .card{
     border: 2px solid gray;
     box-shadow: 0 0 2px gray;
+    border-radius: 0 !important;
 }
 
 /* text size */
@@ -25,13 +26,17 @@ input{
     font-size: 25px;
 }
 .text-xl{
-    font-size: 25px;
+    font-size: 25px !important;
 }
 .text-lg{
-    font-size: 20px;
+    font-size: 20px !important;
 }
 .text-md{
-    font-size: 18px;
+    font-size: 18px !important;
+}
+.underline{
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 /* button */
@@ -63,7 +68,7 @@ i{
     cursor: pointer;
     font-size: 25px;
 }
-h1{
+h1,p{
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }

@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import AdminHome from './pages/Admin/AdminHome'
 import AdminBuses from './pages/Admin/AdminBuses';
 import AdminUsers from './pages/Admin/AdminUsers';
+import BookNow from './pages/BookNow';
 
 
 
@@ -29,6 +30,9 @@ function App() {
           <Route path='/Admin' element= {<ProtectedRoute> <AdminHome/> </ProtectedRoute>} />
           <Route path='/Admin/buses' element= {<ProtectedRoute> <AdminBuses/> </ProtectedRoute>} />
           <Route path='/Admin/users' element= {<ProtectedRoute> <AdminUsers/> </ProtectedRoute>} />
+
+          <Route path='/book-now/:id' element= {<ProtectedRoute> <BookNow/> </ProtectedRoute>} />
+
 
         </Routes>
       </BrowserRouter>
