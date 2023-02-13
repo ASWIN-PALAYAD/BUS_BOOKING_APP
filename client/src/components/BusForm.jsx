@@ -3,28 +3,38 @@ import {Col, Form, message, Modal, Row} from 'antd';
 import {useDispatch} from 'react-redux'
 import { axiosInstance } from '../helpers/axiosInstance';
 import {ShowLoading,HideLoading} from '../redux/alertsSlice'
+import moment from 'moment'
 
 
-const BusForm = ({showBusForm,setShowBusForm,type='add'}) => {
+const BusForm = ({showBusForm,setShowBusForm,type ='add', getData,selectedBus,setSelectedBus}) => {
 
   const dispatch = useDispatch();
 
   const onFinish = async(values) => {
+    console.log(values);
     try {
-      dispatch(ShowLoading())
-      let response = null;
-      if(type === 'add'){
-        response = await axiosInstance.post('/api/buses/add-bus', values)
+        dispatch(ShowLoading())
+        let response = null;
+        if(type === 'add'){
+          console.log('hai welcom');
+        response = await axiosInstance.post('/api/buses/add-bus',values)
       }else{
-
+        response = await axiosInstance.patch('/api/buses/update-bus',{
+            ...values,
+            _id:selectedBus._id,
+        })
       }
       if(response.data.success){
         message.success(response.data.message)
       }else{
         message.error(response.data.message)
       }
+      getData();
+      setShowBusForm(false);
+      setSelectedBus(null)
       dispatch(HideLoading())
     } catch (error) {
+        console.log(error);
         message.error(error.message)
         dispatch(HideLoading())
     }
@@ -32,8 +42,8 @@ const BusForm = ({showBusForm,setShowBusForm,type='add'}) => {
 
 
   return (
-    <Modal width={800} title='Add Bus' open={showBusForm} onCancel={()=>setShowBusForm(false)} footer={null} >
-        <Form layout='vertical' onFinish={onFinish} >
+    <Modal width={800} title={type === "add" ? 'Add Bus' : 'Edit Bus'} open={showBusForm} onCancel={()=>{setShowBusForm(false); setSelectedBus(null)}} footer={null} >
+        <Form layout='vertical' onFinish={onFinish} initialValues={selectedBus} >
             <Row gutter={[10,10]}>
                 <Col lg={24} xs={24} >
                     <Form.Item label='Bus Name' name='name' >
@@ -66,7 +76,7 @@ const BusForm = ({showBusForm,setShowBusForm,type='add'}) => {
                 </Col>
               
                 <Col lg={8} xs={24} >
-                    <Form.Item label='Journey DAte' name='journeyDate' >
+                    <Form.Item label='Journey Date' name='journeyDate' >
                         <input type='date' />
                     </Form.Item>
                 </Col>

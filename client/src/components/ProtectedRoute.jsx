@@ -11,7 +11,7 @@ const ProtectedRoute = ({children}) => {
 
   const dispatch = useDispatch();
 
-    const {loading} = useSelector(state=> state.alerts)
+    const {user} = useSelector(state=> state.users)
     const navigate = useNavigate();
     const validateToken = async() => {
         try {
@@ -49,7 +49,7 @@ const ProtectedRoute = ({children}) => {
 
   return (
     <div>
-        {!loading &&  <div><DefaultLayout>{children}</DefaultLayout></div>}
+        {user &&  <div><DefaultLayout>{children}</DefaultLayout></div>}
     </div>
   )
 }
