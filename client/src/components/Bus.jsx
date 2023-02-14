@@ -6,7 +6,7 @@ const Bus = ({bus}) => {
     const navigate = useNavigate()
 
   return (
-    <div className='card p-2' >
+    <div className='card p-2 mx-2' >
         <h1 className='text-lg' >{bus.name}</h1>
         <hr />
         <div className='d-flex justify-content-between' >

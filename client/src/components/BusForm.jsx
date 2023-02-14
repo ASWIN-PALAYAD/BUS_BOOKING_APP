@@ -83,19 +83,24 @@ const BusForm = ({showBusForm,setShowBusForm,type ='add', getData,selectedBus,se
 
                 <Col lg={8} xs={24} >
                     <Form.Item label='Departure' name='departure' >
-                        <input type='text' />
+                        <input type='time' />
                     </Form.Item>
                 </Col>
 
                 <Col lg={8} xs={24} >
                     <Form.Item label='Arrival' name='arrival' >
-                        <input type='text' />
+                        <input type='time' />
                     </Form.Item>
                 </Col> 
 
                 <Col lg={12} xs={24} >
                     <Form.Item label='Type' name='type' >
-                        <input type='text' />
+                        <select name="" id="">
+                            <option value="AC" selected >AC</option>
+                            <option value="AC Semi-sleeper">AC Semi-sleeper</option>
+                            <option value="Sleeper-Non AC">Sleeper-Non AC</option>
+                            <option value="Super Fast">Super Fast</option>
+                        </select>
                     </Form.Item>
                 </Col>
 
@@ -103,7 +108,17 @@ const BusForm = ({showBusForm,setShowBusForm,type ='add', getData,selectedBus,se
                     <Form.Item label='Fare' name='fare' >
                         <input type='text' />
                     </Form.Item>
-                </Col>               
+                </Col> 
+
+                <Col lg={12} xs={24} >
+                    <Form.Item label='Bus Status' name='status' >
+                        <select name="" id="">
+                            <option value="Yet To Start" selected>Yet To Start</option>
+                            <option value="Running">Running</option>
+                            <option value="Completed">Completed</option> 
+                        </select>
+                    </Form.Item>
+                </Col>              
 
             </Row>
             <div className="d-flex justify-content-end">

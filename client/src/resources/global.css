@@ -6,7 +6,7 @@
 }
 
 /* inputs */
-input{
+input , select{
     height: 40px;
     border: 2px solid gray;
     width: 100%;
@@ -14,11 +14,16 @@ input{
 
 }
 
+.ant-form-item{
+    margin: 0 !important;
+}
+
 /* card */
 .card{
     border: 2px solid gray;
-    box-shadow: 0 0 2px gray;
+    box-shadow: 0 0 1px rgb(145, 142, 142);
     border-radius: 0 !important;
+    margin-bottom: 5px;
 }
 
 /* text size */

@@ -1,5 +1,4 @@
 import React,{useState,useEffect, useRef} from 'react'
-import BusForm from '../components/BusForm';
 import PageTitle from '../components/PageTitle';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../redux/alertsSlice';
@@ -38,6 +37,9 @@ const Bookings = () => {
         {
             title:"Seats",
             dataIndex:'seats',
+            render:(seats)=> {
+                return seats.join(',')
+            }
         },
         {
             title:'Action',
@@ -121,19 +123,16 @@ const Bookings = () => {
                         <span className='text-secondary' >Journey Time : </span>
                         {selectedBooking.departure}
                     </p>
-                    <p>
-                        <span className='text-secondary' >Seats : </span>
-                        {selectedBooking.seats}
-                    </p>
+                    
                     <hr />
                     <p>
                         <span className='text-secondary text-lg' >Seat Number : </span><br />
-                        {selectedBooking.seats}
+                        {selectedBooking.seats.join(',')}
                     </p>
                     <hr />
                     <p>
                         <span className='text-secondary text-lg' >Total Amount : </span><br />
-                        {selectedBooking.amount} /-
+                        {selectedBooking.fare} /-
                         {/* {selectedBooking.fare * selectedBooking.seats.length} */}
                     </p>
 

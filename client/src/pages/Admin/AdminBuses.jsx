@@ -59,10 +59,10 @@ const AdminBuses = () => {
     }
   ]
 
-  const getBuses = async() => {
+  const getBuses = async() => { 
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.get('/api/buses/get-all-buses');
+      const response = await axiosInstance.post('/api/buses/get-all-buses');
       console.log(response);
       dispatch(HideLoading());
       if(response.data.success){

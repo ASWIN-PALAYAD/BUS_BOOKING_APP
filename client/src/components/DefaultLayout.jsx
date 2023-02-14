@@ -34,7 +34,7 @@ const DefaultLayout = ({children}) => {
 
         {   
             name:'Home',
-            path:'/admin',
+            path:'/',
             icon: 'ri-home-line'
         },
         {

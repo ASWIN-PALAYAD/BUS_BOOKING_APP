@@ -28,7 +28,7 @@ function App() {
           <Route path='/register' element={<PublicRoute> <Register/> </PublicRoute>} />
           <Route path='/login' element={<PublicRoute> <Login/> </PublicRoute>} />
 
-          <Route path='/Admin' element= {<ProtectedRoute> <AdminHome/> </ProtectedRoute>} />
+          {/* <Route path='/Admin' element= {<ProtectedRoute> <AdminHome/> </ProtectedRoute>} /> */}
           <Route path='/Admin/buses' element= {<ProtectedRoute> <AdminBuses/> </ProtectedRoute>} />
           <Route path='/Admin/users' element= {<ProtectedRoute> <AdminUsers/> </ProtectedRoute>} />
 

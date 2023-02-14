@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const Booking = require('../models/bookingsModel')
-const stripe = require('stripe')(process.env.STRIPE_KEY)
+const stripe = require('stripe')(process.env.STRIPE_KEY);
+const Bus = require('../models/busModel')
 const { v4: uuidv4 } = require('uuid');
 
 //book a seat 
 router.post('/book-seat',authMiddleware, async(req,res)=> {
-    console.log(req.body);
     try {
         const newBooking = new Booking({
             ...req.body,
@@ -85,7 +85,7 @@ router.get('/get-bookings-by-user-id', authMiddleware, async(req,res)=> {
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            message:'Booking fetch failed',
+            message:'Booking fetch failed', 
             data:error,
             success:false
         })
