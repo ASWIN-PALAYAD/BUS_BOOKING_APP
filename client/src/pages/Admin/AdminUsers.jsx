@@ -23,17 +23,33 @@ const AdminUsers = () => {
       dataIndex:'email'
     },
     {
+      title:'Status',
+      dataIndex:'',
+      render:(data)=> {
+        return data.isBlocked ? 'Blocked' : 'Active'
+      }
+    },
+    {
       title:'Role',
-      dataIndex:'role'
+      dataIndex:'',
+      render:(data)=> {
+        if(data?.isAdmin){
+          return 'Admin'
+        }else{
+          return 'User'
+        }
+      }
     },
     {
       title:'Action',
       dataIndex:'action',
       render : (action,record)=> (
         <div className='d-flex gap-3' >
-            <p className='underline' >
-                Block
-            </p>
+            {record?.isBlocked && <p className='underline' onClick={()=> updateUserPermitions(record,'unblock')} >Unblock</p>}
+            {!record?.isBlocked && <p className='underline' onClick={()=> updateUserPermitions(record,'block')} >Block</p>}
+            {record?.isAdmin && <p className='underline' onClick={()=> updateUserPermitions(record,'remove-admin')} >Remove Admin</p>}
+            {!record?.isAdmin && <p className='underline' onClick={()=> updateUserPermitions(record,'make-admin')} >Make Admin</p>}
+            <p className="underline">Delete</p>
         </div>
       )
     }
@@ -46,9 +62,50 @@ const AdminUsers = () => {
       console.log(response);
       dispatch(HideLoading());
       if(response.data.success){
-        setUsers(response.data.data);
+        setUsers(response.data.data); 
+        console.log(users);
       }else{
         dispatch(HideLoading());
+        message.error(response.data.message)
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message)
+    }
+  }
+
+  const updateUserPermitions = async(user,action) => {
+
+    try {
+      let payload = null;
+      if(action === "make-admin"){
+        payload ={
+          ...user,
+          isAdmin:true,
+        }
+      }else if(action === 'remove-admin'){
+        payload = {
+          ...user,
+          isAdmin:false
+        }
+      }else if(action === 'block'){
+        payload = {
+          ...user,
+          isBlocked:true,
+        }
+      }else if(action === 'unblock'){
+        payload = {
+          ...user,
+          isBlocked:false
+        }
+      }
+      dispatch(ShowLoading());
+      const response = await axiosInstance.post('/api/users/update-user-permitions', payload);
+      dispatch(HideLoading())
+      if(response.data.success){
+        getUsers();
+        message.success(response.data.message)
+      }else{
         message.error(response.data.message)
       }
     } catch (error) {

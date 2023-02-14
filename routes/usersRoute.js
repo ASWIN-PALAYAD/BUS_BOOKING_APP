@@ -44,6 +44,13 @@ router.post('/login',async(req,res)=> {
                 data:null,
             });
         }
+        if(userExist.isBlocked){
+            return res.send({
+                message:'Your account is blocked.. Please contact with admin',
+                success:false,
+                data:null
+            });
+        }
         const passwordMatch = await bcrypt.compare(
             req.body.password,userExist.password
         );
@@ -94,22 +101,40 @@ router.post('/get-user-by-id',authMiddleware,async(req,res)=> {
 })
 
 //get all users
-// router.post('/get-all-users',authMiddleware,async(req,res)=> {
-//     try {
-//         const users = await User.find({});
-//         res.status(200).send({
-//             message:'Users fetched successfully',
-//             success:true,
-//             data:users
-//         });
-//     } catch (error) {
-//         res.status(500).send({
-//             message:error.message,
-//             success: false, 
-//             data:null
-//         });
-//     }
-// });
+router.post('/get-all-users',authMiddleware,async(req,res)=> {
+    try {
+        const users = await User.find({});
+        res.status(200).send({
+            message:'Users fetched successfully',
+            success:true,
+            data:users
+        });
+    } catch (error) {
+        res.status(500).send({
+            message:error.message,
+            success: false, 
+            data:null
+        });
+    }
+});
+
+//update user
+router.post('/update-user-permitions',authMiddleware,async(req,res)=> {
+    try {
+        await User.findByIdAndUpdate(req.body,req.body);
+        res.status(200).send({
+            success:true,
+            message: "User permission updated successfully",
+            data:null
+        })
+    } catch (error) {
+        res.send({
+            message:error.message,
+            success:false,
+            data:null
+        })
+    }
+})
 
 
 

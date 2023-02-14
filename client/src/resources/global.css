@@ -39,6 +39,12 @@ input , select{
 .text-md{
     font-size: 18px !important;
 }
+.secondary-text{
+    color: var(--secondary) !important ;
+}
+.primary-text{
+    color: var(--primary) !important;
+}
 .underline{
     text-decoration: underline;
     cursor: pointer;
@@ -61,6 +67,12 @@ input , select{
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    border-radius: 10px;
+}
+.outline{
+    border: 2px solid var(--primary) !important;
+    color: var(--primary) !important;
+    background-color: white;
     border-radius: 10px;
 }
 

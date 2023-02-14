@@ -1,8 +1,8 @@
 import { Col, message, Row } from 'antd';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch} from 'react-redux'
 import Bus from '../components/Bus';
-import { axiosInstance } from '../helpers/axiosInstance';
 import { HideLoading, ShowLoading } from '../redux/alertsSlice';
 
 const Home = () => {
@@ -19,7 +19,14 @@ const Home = () => {
     });
     try {
       dispatch(ShowLoading());
-      const response = await axiosInstance.post('/api/buses/get-all-buses', {filters : tempFilters});
+      const response = await axios.post('/api/buses/get-all-buses',
+           {filters : tempFilters},
+           {
+            headers:{
+              Authorization:`Bearer ${localStorage.getItem('token')}`
+            }
+           }
+       );
       dispatch(HideLoading());
       if(response.data.success){
         setBuses(response.data.data);
@@ -42,7 +49,7 @@ const Home = () => {
   return (
     <div>
       {/* filter area */}
-      <div className='my-3 card-sm px-2 py-3' >
+      <div className='my-3  py-3' >
         <Row gutter={10} align='center'>
           <Col lg={6} sm={25} >
             <input type="text" 
@@ -68,7 +75,7 @@ const Home = () => {
           <Col lg={6} sm={24} >
             <div className="d-flex gap-2">
             <button className='primary-btn' onClick={()=> getBuses()} >Filter</button>
-            <button className='secondary-btn' 
+            <button className=' outline' 
                     onClick={()=> setFilters({
                       from:'',
                       to:'',

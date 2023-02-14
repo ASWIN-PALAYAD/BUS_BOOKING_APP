@@ -84,16 +84,16 @@ const BookNow = () => {
             <Row className='mt-3' gutter={[30,30]}>
             {/*  bus deatails area */}
             <Col lg={12} xs={24} sm={24} >
-                <h1 className="text-xl text-secondary">{bus.name}</h1>
+                <h1 className="text-xl primary-text">{bus.name}</h1>
                 <h1 className="text-md">{bus.from} - {bus.to}</h1>
                 <hr />
-                <div className='flex flex-col gap-1' >
-                    <h1 className='text-lg'><b>Journey Date :</b> {bus.journeyDate} </h1>
-                    <div className="text-lg"><b>Fare : ${bus.fare}/-</b></div>
-                    <div className="text-lg"><b>Departure Time : {bus.departure}</b></div>
-                    <div className="text-lg"><b>Arrival Time : {bus.arrival}</b></div>
-                    <div className="text-lg"><b>Capacity : {bus.capacity}</b></div>
-                    <div className="text-lg"><b>Seats Left : {bus.capacity-bus.seatsBooked.length}</b></div>
+                <div className='flex flex-col gap-2' >
+                    <p className='text-md'>Journey Date : {bus.journeyDate} </p>
+                    <p className="text-md">Fare : ${bus.fare}/-</p>
+                    <p className="text-md">Departure Time : {bus.departure}</p>
+                    <p className="text-md">Arrival Time : {bus.arrival}</p>
+                    <p className="text-md">Capacity : {bus.capacity}</p>
+                    <p className="text-md">Seats Left : {bus.capacity-bus.seatsBooked.length}</p>
                 </div>
                 <hr />  
                 <div className='flex flex-col gap-2 mt-2' >
