@@ -12,6 +12,7 @@ import AdminBuses from './pages/Admin/AdminBuses';
 import AdminUsers from './pages/Admin/AdminUsers';
 import BookNow from './pages/BookNow';
 import Bookings from './pages/Bookings';
+import Profile from './pages/Profile';
 
 
 
@@ -34,6 +35,9 @@ function App() {
 
           <Route path='/book-now/:id' element= {<ProtectedRoute> <BookNow/> </ProtectedRoute>} />
           <Route path='/bookings' element= {<ProtectedRoute> <Bookings/> </ProtectedRoute>} />
+
+          <Route path='/profile' element= {<ProtectedRoute> <Profile/> </ProtectedRoute>} />
+
 
 
         </Routes>

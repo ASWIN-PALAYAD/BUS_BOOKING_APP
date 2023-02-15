@@ -76,7 +76,7 @@ router.post('/make-payment',authMiddleware,async(req,res)=> {
 //get booking by user id
 router.get('/get-bookings-by-user-id', authMiddleware, async(req,res)=> {
     try {
-        const bookings = await (await Booking.find({user:req.body.userId}).populate('bus').populate('user'));
+        const bookings = await Booking.find({user:req.body.userId}).populate('bus').populate('user');
         res.status(200).send({
             message:"Bookings fetched successfully",
             data:bookings,
